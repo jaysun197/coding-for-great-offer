@@ -33,7 +33,10 @@ public class Code01_ExpressionCompute {
 		LinkedList<String> que = new LinkedList<String>();
 		int cur = 0;
 		int[] bra = null;
-		/*从i出发，遇到 ） 或者越界了停止*/
+		/*
+		* 从i出发，遇到 ） 或者越界了停止
+		* 这里遇到）不是真正的停止，而是返回到递归的上一层，上一层会跳过）继续往后算
+		* */
 		while (i < str.length && str[i] != ')') {
 			if (str[i] >= '0' && str[i] <= '9') {
 				/*如果遇到的是0~9，之前的cur*10+现在遇到的数算好后给cur，然后i++*/

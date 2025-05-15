@@ -32,7 +32,7 @@ public class Code03_ExpressionAddOperators {
 		if (num.length() == 0) {
 			return ret;
 		}
-		/*沿途的数字和+ - * 的决定，放在path里*/
+		/*沿途的数字和+ - * 的决定，放在path里，path最长2n-1:每个数字中间都有符号*/
 		char[] path = new char[num.length() * 2 - 1];
 		// num -> char[]
 		char[] digits = num.toCharArray();
@@ -77,18 +77,18 @@ public class Code03_ExpressionAddOperators {
 		for (int i = index; i < num.length; i++) { // pos ~ i
 			// num[index...i] 作为第一个数字！
 			n = n * 10 + num[i] - '0';
-			/*j位置，填入num[i]后，随着循环的继续，j后面的位置都会填上num后面的数*/
+			/*j位置，填入num[i]后，随着循环的继续，j后面的位置都要填上num[i]后面的数，所以这里j要随着i的++而++*/
 			path[j++] = num[i];
 			/*len的值从来没变过*/
 			/*在n的前面填了+*/
 			path[len] = '+';
-			/*n属于不稳定的值，n前面的计算，即path中的公式都是稳定值，所以cur之前是不稳定的，因为cur后面是+，cur也稳定了*/
+			/*n属于不稳定的值，n前面的计算，即path中的公式都是稳定值，所以cur之前是不稳定的，因为cur后面是+，cur也稳定了。因为当前数字前面是加号，前面滞留下来的cur可以加到左边部分里去*/
 			dfs(res, path, j, left + cur, n, num, i + 1, aim);
 			path[len] = '-';
 			/*注意n的值，因为base case中只计算和，所以这里要加上-*/
 			dfs(res, path, j, left + cur, -n, num, i + 1, aim);
 			path[len] = '*';
-			/*cur依然是不稳定的值*/
+			/*cur依然是不稳定的值，乘法因为需要优先计算，所以暂时还不能加到左边的部分里去，需要与拿到n优先计算成为新的cur*/
 			dfs(res, path, j, left, cur * n, num, i + 1, aim);
 
 			/*第一个数字是0，那就不能和后面的数字组合，只能作为单个数字，经历上面的计算流程*/
